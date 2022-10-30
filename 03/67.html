@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>php 67</title>
+</head>
+
+<body>
+
+<!-- <a href="62.php?film[]=peter_pan&film[]=lord_of_the_rings&sb=send">link</a> -->
+
+<form name="movies" method="get" action="67.php">
+    What is your favorite film?
+    <br>
+    <br>
+
+    <select name="film[]" multiple="multiple" size="3">
+
+        <optgroup label="sci-fi">
+            <option value="matrix">Matrix</option>
+            <option value="terminator">Terminator</option>
+            <option value="star wars">Star Wars</option>
+        </optgroup>
+
+        <optgroup label="war">
+            <option value="d-day">D-Day</option>
+            <option value="dirty dozen">Dirty Dozen</option>
+            <option value="black hawk down">Black Hawk Down</option>
+        </optgroup>
+    </select>
+
+    <br/>
+    <input type="submit" name="sb" value="send">
+    <input type="reset" name="rb" value="cancel">
+</form>
+
+</body>
+</html>
