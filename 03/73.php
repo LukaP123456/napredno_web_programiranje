@@ -1,55 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>php 73</title>
 </head>
 
 <body>
-<?php
+    <?php
 
-echo "<pre>";
-var_dump($_FILES);
-echo "</pre>";
-
-
-if ($_FILES['file']["error"] > 0) {
-    echo "Something went wrong during file upload!";
-} else {
-    if (isset($_FILES["file"]) and is_uploaded_file($_FILES['file']['tmp_name'])) {
-
-        $file_name = $_FILES['file']["name"];
-        $file_temp = $_FILES["file"]["tmp_name"];
-        $file_size = $_FILES["file"]["size"];
-        $file_type = $_FILES["file"]["type"];
-        $file_error = $_FILES['file']["error"];
-        $full_path = $_FILES['file']["full_path"]; // The full path as submitted by the browser.
-        // This value does not always contain a real directory structure, and cannot be trusted. Available as of PHP 8.1.0.
+    echo "<pre>";
+    var_dump($_FILES);
+    echo "</pre>";
 
 
-        // http://en.wikipedia.org/wiki/Exchangeable_image_file_format
-        // http://www.php.net/manual/en/book.exif.php
+    if ($_FILES['file']["error"] > 0) {
+        echo "Something went wrong during file upload!";
+    } else {
+        if (isset($_FILES["file"]) and is_uploaded_file($_FILES['file']['tmp_name'])) {
+
+            $file_name = $_FILES['file']["name"];
+            $file_temp = $_FILES["file"]["tmp_name"];
+            $file_size = $_FILES["file"]["size"];
+            $file_type = $_FILES["file"]["type"];
+            $file_error = $_FILES['file']["error"];
+            $full_path = $_FILES['file']["full_path"]; // The full path as submitted by the browser.
+            // This value does not always contain a real directory structure, and cannot be trusted. Available as of PHP 8.1.0.
 
 
-        echo exif_imagetype($file_temp) . "<br>";
-
-        if (!exif_imagetype($file_temp))
-            exit("File is not a picture!");
+            // http://en.wikipedia.org/wiki/Exchangeable_image_file_format
+            // http://www.php.net/manual/en/book.exif.php
 
 
-        echo "Ime poslate datoteke / A feltöltött fájl neve: $file_name <br />";
-        echo "Privremena lokacija datoteke / Az ideiglenes fájl eljárási útja: $file_temp <br />";
-        echo "Veličina poslate datoteke u bajtovima / A feltöltött fájl mérete bájtban: $file_size <br />";
-        echo "Tip poslate datoteke / A feltöltött fájl típusa: $file_type <br />";
-        echo "Kod greške / Hibakód: $file_error <br />";
-        // subotica.jpg
-        // vts.subotica.jpg
-        // strrpos
-        // substr
-        // explode
+            echo exif_imagetype($file_temp) . "<br>";
 
-        //vts.subotica.jpg
-        /*
+            if (!exif_imagetype($file_temp))
+                exit("File is not a picture!");
+
+
+            echo "Ime poslate datoteke / A feltöltött fájl neve: $file_name <br />";
+            echo "Privremena lokacija datoteke / Az ideiglenes fájl eljárási útja: $file_temp <br />";
+            echo "Veličina poslate datoteke u bajtovima / A feltöltött fájl mérete bájtban: $file_size <br />";
+            echo "Tip poslate datoteke / A feltöltött fájl típusa: $file_type <br />";
+            echo "Kod greške / Hibakód: $file_error <br />";
+            // subotica.jpg
+            // vts.subotica.jpg
+            // strrpos
+            // substr
+            // explode
+
+            //vts.subotica.jpg
+            /*
         $ext_temp[0] = "vts";
         $ext_temp[1] = "subotica";
         $ext_temp[2] = "jpg";
@@ -72,55 +73,55 @@ if ($_FILES['file']["error"] > 0) {
 
         */
 
-        $ext_temp = explode(".", $file_name); //
-        $extension = end($ext_temp);
+            $ext_temp = explode(".", $file_name); //
+            $extension = end($ext_temp);
 
-        if (isset($_POST['alias'])) {
-            $alias = $_POST['alias'];
-        } else {
-            $alias = "";
-        }
+            if (isset($_POST['alias'])) {
+                $alias = $_POST['alias'];
+            } else {
+                $alias = "";
+            }
 
-        $new_file_name = Date("YmdHis") . "-$alias.$extension";
-        // 20171110084338.jpg
-        // 20191112134305-vts.jpg
-        $directory = "images";
+            $new_file_name = Date("YmdHis") . "-$alias.$extension";
+            // 20171110084338.jpg
+            // 20191112134305-vts.jpg
+            $directory = "images";
 
-        $upload = "$directory/$new_file_name"; // images/20191112134305-vts.jpg
+            $upload = "$directory/$new_file_name"; // images/20191112134305-vts.jpg
 
-        /*
+            /*
 
         201711289282.extension
 
         */
 
-        if (!is_dir($directory)) //is_dir("images")
-            mkdir($directory);
+            if (!is_dir($directory)) //is_dir("images")
+                mkdir($directory);
 
-        if (!file_exists($upload)) //images/back.png
-        {
-            if (move_uploaded_file($file_temp, $upload)) {
+            if (!file_exists($upload)) //images/back.png
+            {
+                if (move_uploaded_file($file_temp, $upload)) {
 
-                $size = getimagesize($upload);
-                var_dump($size);
-                foreach ($size as $key => $value)
-                    echo "$key = $value<br>";
+                    $size = getimagesize($upload);
+                    var_dump($size);
+                    foreach ($size as $key => $value)
+                        echo "$key = $value<br>";
 
-                echo "<img src=\"$upload\" $size[3] border=\"0\" alt=\"$file_name\">";
+                    echo "<img src=\"$upload\" $size[3] border=\"0\" alt=\"$file_name\">";
 
-                // width="1000" height="669"
-                // <img src="pic.gif" width="1000" height="669" alt="pic" />
+                    // width="1000" height="669"
+                    // <img src="pic.gif" width="1000" height="669" alt="pic" />
+                } else
+                    echo "<p><b>Error!</b></p>";
             } else
-                echo "<p><b>Error!</b></p>";
-        } else
-            echo "<p><b>File with this name already exists!</b></p>";
-    }
+                echo "<p><b>File with this name already exists!</b></p>";
+        }
 
-//foreach(get_defined_constants() as $key=>$value)
+        //foreach(get_defined_constants() as $key=>$value)
 
-//echo "$key = $value<br />";
+        //echo "$key = $value<br />";
 
-    /*
+        /*
 
      if(!exif_imagetype($file_temp))
      exit("File is not a picture!");
@@ -165,7 +166,8 @@ if ($_FILES['file']["error"] > 0) {
     getimagesize
 
     */
-}
-?>
+    }
+    ?>
 </body>
+
 </html>
