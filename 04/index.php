@@ -28,11 +28,9 @@ if (isset($_GET['error']) and array_key_exists($_GET['error'], $errors)) {
 
 <form method="post" name="upload" action="upload.php" enctype="multipart/form-data">
 
-    <label for="alias">Alias:</label><input type="text" name="alias" id="alias"> <br>
     <label for="if">File: <img src="upload.png" alt="file" height="40" title="choose file"> </label>
 
     <input type="file" name="file" id="if" hidden><br><br>
-
     <input type="submit" name="sb" id="sb" value="upload">
     <input type="reset" name="rb" id="rb" value="cancel">
 
