@@ -20,7 +20,7 @@ require 'functions.php'
     <title>Task 4</title>
 </head>
 <body>
-<form class="px-5" method="post" id="data" name="data" action="comments.php">
+<form class="px-5" method="post" id="data" name="data" action="comments.php" enctype="multipart/form-data">
     <br>
     <div class="form-group">
         <label for="name">Name</label>
@@ -32,6 +32,11 @@ require 'functions.php'
         <label for="email">Email address</label>
         <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
                placeholder="Enter email">
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="img">Upload image</label>
+        <input type="file" class="form-control" id="email" name="email" aria-describedby="emailHelp">
     </div>
     <br>
     <div class="form-group">
