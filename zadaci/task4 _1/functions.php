@@ -1,6 +1,16 @@
 <?php
 $badWords = ['drop', 'delete', 'kill', 'destroy', 'fool'];
 
+/**
+ * Generates a dropdown menu based on the data inputted. If the user enters month as the name parameter, a select list with months will be generated,
+ * if years is inputted as the name parameter a select list with years will be generated
+ * @param string $label
+ * @param int $start
+ * @param int $end
+ * @param string $name
+ * @param string $default
+ * @return void
+ */
 function getDropdownMenu(string $label, int $start, int $end, string $name, string $default = 'optional'): void
 {
     echo '<label for="' . $label . '">' . $label . '</label><br>';
@@ -18,14 +28,6 @@ function getDropdownMenu(string $label, int $start, int $end, string $name, stri
         }
     }
 
-//    if ($name === 'days') {
-//        for ($i = $end; $i > 0; $i--) {
-//            $time = strtotime(sprintf('first day of +%d month', $i));
-//            $value = date('D', $time);
-//            echo '<option> ' . $value . ' </option>';
-//        }
-//    }
-
     if ($name === 'days') {
         for ($i = 1; $i <= 31; $i++) {
             echo '<option> ' . $i . ' </option>';
@@ -40,16 +42,21 @@ function getDropdownMenu(string $label, int $start, int $end, string $name, stri
     echo '</select><br>';
 }
 
-function getFilteredCommentData(string $comment, array $badWords,mysqli $connection): array
+/**
+ * Function filters bad words from the array $badWords.If a bad word is detected in the inputted comment the word will be
+ * censored. Based on the amount of bad words that are in the comment a bad level parameter will be generated,
+ * at the end the comment is inserted into the DB
+ * @param string $comment
+ * @param array $badWords
+ * @param mysqli $connection
+ * @return array
+ */
+function getFilteredCommentData(string $comment, array $badWords, mysqli $connection): array
 {
-    $trimmed_comment = trim($comment);
+    $trimmed_comment = trim(strip_tags($comment));
     $exploded_comment_array = explode(" ", $trimmed_comment);
-    var_dump($exploded_comment_array);
-    echo '<hr>';
 
     $bad_words_array = array_intersect($exploded_comment_array, $badWords);
-    var_dump($bad_words_array);
-    echo '<hr>';
     foreach ($bad_words_array as $key => $value) {
         $item_first_char = $value[0];
         $item_last_char = $value[strlen($value) - 1];
@@ -57,9 +64,6 @@ function getFilteredCommentData(string $comment, array $badWords,mysqli $connect
 
         $exploded_comment_array[$key] = $censored_word;
     }
-    var_dump($exploded_comment_array);
-
-    var_dump(array_count_values($bad_words_array));
 
     $total_word_count = count($exploded_comment_array);
     $bad_word_count = count($bad_words_array);
@@ -71,16 +75,21 @@ function getFilteredCommentData(string $comment, array $badWords,mysqli $connect
         'total_words' => count($exploded_comment_array),
         'suggested_bad_level' => getSuggestedBadLevel($total_word_count, $bad_word_count)
     ];
-
-    insertComent($data, $trimmed_comment,$connection);
-
+    insertComment($data, $trimmed_comment, $connection);
     return $data;
 }
 
-function insertComent(array $comment_data, string $dirty_comment,mysqli $connection)
+/**
+ * Inserts comment into the DB
+ * @param array $comment_data
+ * @param string $dirty_comment
+ * @param mysqli $connection
+ * @return void
+ */
+function insertComment(array $comment_data, string $dirty_comment, mysqli $connection): void
 {
     $filtered_comment = $comment_data['filtered_comment'];
-    foreach ($comment_data['words'] as $item){
+    foreach ($comment_data['words'] as $item) {
         $word = $item;
     }
     $total_bad_words = $comment_data['total_bad_words'];
@@ -108,6 +117,12 @@ function insertComent(array $comment_data, string $dirty_comment,mysqli $connect
     }
 }
 
+/**
+ * Generates the bad level of a comment based on the amount of bad words used
+ * @param $total_words
+ * @param $total_bad_words
+ * @return int|null
+ */
 function getSuggestedBadLevel($total_words, $total_bad_words): int|null
 {
     if ($total_bad_words == $total_words) {
@@ -116,25 +131,14 @@ function getSuggestedBadLevel($total_words, $total_bad_words): int|null
         $result = $total_bad_words / $total_words;
         $percent = round((float)$result * 100) . '%';
         var_dump($percent);
-        switch ($percent) {
-            case $percent > 2 && $percent < 19:
-                return 2;
-                break;
-            case $percent > 20 && $percent < 39:
-                return 3;
-                break;
-            case $percent > 40 && $percent < 59:
-                return 4;
-                break;
-            case $percent > 60 && $percent < 79:
-                return 5;
-                break;
-            case $percent > 80 && $percent < 99:
-                return 6;
-                break;
-            default:
-                return null;
-        }
+        return match ($percent) {
+            $percent > 2 && $percent < 19 => 2,
+            $percent > 20 && $percent < 39 => 3,
+            $percent > 40 && $percent < 59 => 4,
+            $percent > 60 && $percent < 79 => 5,
+            $percent > 80 && $percent < 99 => 6,
+            default => null,
+        };
     }
 }
 
