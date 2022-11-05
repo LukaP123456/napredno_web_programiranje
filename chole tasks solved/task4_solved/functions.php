@@ -72,7 +72,7 @@ function getFilteredCommentData(string $comment, array $badWords,mysqli $connect
         'suggested_bad_level' => getSuggestedBadLevel($total_word_count, $bad_word_count)
     ];
 
-    insertComent($data, $trimmed_comment,$connection);
+    insertComment($data, $trimmed_comment,$connection);
 
     return $data;
 }

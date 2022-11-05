@@ -19,26 +19,41 @@ require 'functions.php'
             crossorigin="anonymous"></script>
     <title>Task 4</title>
 </head>
-<body>
+<body class="bg-black text-white">
 <form class="px-5" method="post" id="data" name="data" action="comments.php" enctype="multipart/form-data">
     <br>
-    <div class="form-group">
+    <div class="form-group w-25">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp"
                placeholder="Enter name">
     </div>
     <br>
-    <div class="form-group">
+    <div class="form-group w-25">
         <label for="email">Email address</label>
         <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
                placeholder="Enter email">
     </div>
     <br>
-    <div class="form-group">
+    <div class="form-group w-25">
         <label for="img">Upload image</label>
         <input type="file" class="form-control" id="email" name="email" aria-describedby="emailHelp">
     </div>
     <br>
+
+    <div class="form-check w-25">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+            private
+        </label>
+    </div>
+    <div class="form-check w-25">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2">
+            public
+        </label>
+    </div>
+    <br>
+
     <div class="form-group">
         <?php
         getDropdownMenu(label: 'days', start: 0, end: 7, name: 'days');
