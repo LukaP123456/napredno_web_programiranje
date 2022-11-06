@@ -1,5 +1,6 @@
 <?php
 $badWords = ['drop', 'delete', 'kill', 'destroy', 'fool'];
+require 'config.php';
 
 /**
  * Generates a dropdown menu based on the data inputted. If the user enters month as the name parameter, a select list with months will be generated,
@@ -140,5 +141,14 @@ function getSuggestedBadLevel($total_words, $total_bad_words): int|null
             default => null,
         };
     }
+}
+
+/**
+ * Function returns actual script name with extension
+ * @return string
+ */
+function getCurrentPage(): string
+{
+    return substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1);
 }
 
