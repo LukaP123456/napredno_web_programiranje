@@ -100,10 +100,10 @@ function insertComment(array $comment_data, string $dirty_comment, mysqli $conne
 
     if (!empty($file_name)) {
         $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,name,status)
-                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,now(),$file_name,$status)";
+                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),$file_name,$status)";
     } else {
         $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,status)
-                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,now(),$status)";
+                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),$status)";
     }
 
     if ($total_bad_words != 0) {
@@ -120,7 +120,7 @@ function insertComment(array $comment_data, string $dirty_comment, mysqli $conne
     if (mysqli_query($connection, $sql)) {
         return true;
     } else {
-        return true;
+        return false;
     }
 }
 
