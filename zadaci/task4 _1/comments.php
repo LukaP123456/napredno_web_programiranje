@@ -1,20 +1,30 @@
 <?php
-require 'config.php';
 require 'functions.php';
 
-if (isset($_POST["name"]) && isset($_POST["email"])
-    && isset($_POST["days"]) && isset($_POST["months"])
-    && isset($_POST["years"]) && isset($_POST["comment"])) {
+$values_array = ['name', 'email', 'days', 'months', 'years', 'comment', 'status'];
+$error_string = './index.php?';
 
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $day = $_POST["days"];
-    $month = $_POST["months"];
-    $year = $_POST["years"];
-    $comment = $_POST["comment"];
+foreach ($values_array as $item) {
+    if (empty($_POST[$item])) {
+        header("Location:" . $error_string . 'm=1');
+        die();
+    }
 
-} else {
-    header("Location:index.php");
+    foreach ($_POST as $key=>$value){
+        $$key = mysqli_real_escape_string($connection, trim(strip_tags($value)));
+    }
 }
+//extract($_POST, EXTR_OVERWRITE, "form_");
+
+
+
+
+
+
+
+
+
+
+
 
 
