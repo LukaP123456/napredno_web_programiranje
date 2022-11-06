@@ -52,7 +52,7 @@ function getDropdownMenu(string $label, int $start, int $end, string $name, stri
  * @param mysqli $connection
  * @return array
  */
-function getFilteredCommentData(string $comment, array $badWords, mysqli $connection): array
+function getFilteredCommentData(string $comment, array $badWords, mysqli $connection,string $file_name,string $status): array
 {
     $trimmed_comment = trim(strip_tags($comment));
     $exploded_comment_array = explode(" ", $trimmed_comment);
@@ -76,7 +76,7 @@ function getFilteredCommentData(string $comment, array $badWords, mysqli $connec
         'total_words' => count($exploded_comment_array),
         'suggested_bad_level' => getSuggestedBadLevel($total_word_count, $bad_word_count)
     ];
-    insertComment($data, $trimmed_comment, $connection);
+    insertComment($data, $trimmed_comment, $connection,$file_name,$status);
     return $data;
 }
 
@@ -85,10 +85,11 @@ function getFilteredCommentData(string $comment, array $badWords, mysqli $connec
  * @param array $comment_data
  * @param string $dirty_comment
  * @param mysqli $connection
- * @return void
+ * @return bool
  */
-function insertComment(array $comment_data, string $dirty_comment, mysqli $connection): void
+function insertComment(array $comment_data, string $dirty_comment, mysqli $connection, string $file_name, string $status): bool
 {
+    $word = 0;
     $filtered_comment = $comment_data['filtered_comment'];
     foreach ($comment_data['words'] as $item) {
         $word = $item;
@@ -97,24 +98,29 @@ function insertComment(array $comment_data, string $dirty_comment, mysqli $conne
     $total_words = $comment_data['total_words'];
     $suggested_bad_level = $comment_data['suggested_bad_level'];
 
-    $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time)
-                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,now())";
-
-    if (mysqli_query($connection, $sql)) {
-        echo 1;
+    if (!empty($file_name)) {
+        $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,name,status)
+                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,now(),$file_name,$status)";
     } else {
-        echo 0;
+        $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,status)
+                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,now(),$status)";
     }
 
     if ($total_bad_words != 0) {
         $bad_words_sql = "INSERT INTO bad_word(id_comment, word, number)
-                VALUES(LAST_INSERT_ID(),$word,2)";
+                VALUES(LAST_INSERT_ID(),$word,$total_bad_words)";
 
         if (mysqli_query($connection, $bad_words_sql)) {
             echo 'bad words inserted';
         } else {
             echo 'error bad words';
         }
+    }
+
+    if (mysqli_query($connection, $sql)) {
+        return true;
+    } else {
+        return true;
     }
 }
 
@@ -151,4 +157,5 @@ function getCurrentPage(): string
 {
     return substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1);
 }
+
 

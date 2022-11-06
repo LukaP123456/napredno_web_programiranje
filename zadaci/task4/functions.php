@@ -18,14 +18,6 @@ function getDropdownMenu(string $label, int $start, int $end, string $name, stri
         }
     }
 
-//    if ($name === 'days') {
-//        for ($i = $end; $i > 0; $i--) {
-//            $time = strtotime(sprintf('first day of +%d month', $i));
-//            $value = date('D', $time);
-//            echo '<option> ' . $value . ' </option>';
-//        }
-//    }
-
     if ($name === 'days') {
         for ($i = 1; $i <= 31; $i++) {
             echo '<option> ' . $i . ' </option>';

@@ -18,7 +18,13 @@ $titles = [
 
 
 $messages = [
-    'index.php'=>[
-        1 => ['style' => 'danger', 'text' =>'Please, insert the correct value into the fields below.'],
+    'index.php' => [
+        1 => ['style' => 'danger', 'text' => 'Please, insert the correct value into the fields below.'],
+        2 => ['style' => 'danger', 'text' => 'Please, insert an image with the extension jpg or png smaller than 1MB.'],
+        3 => ['style' => 'danger', 'text' => 'Failed to move image to directory.'],
+        4 => ['style' => 'success', 'text' => 'Comment and picture uploaded.'],
     ]
 ];
+
+$badWords = ['drop', 'delete', 'kill', 'destroy', 'fool'];
+
