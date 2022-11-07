@@ -24,6 +24,9 @@ $messages = [
         2 => ['style' => 'danger', 'text' => 'Please, insert an image with the extension jpg or png smaller than 1MB.'],
         3 => ['style' => 'danger', 'text' => 'Failed to move image to directory.'],
         4 => ['style' => 'success', 'text' => 'Comment and picture uploaded.'],
+        5 => ['style' => 'success', 'text' => 'Comment uploaded.'],
+        6 => ['style' => 'success', 'text' => 'Comment uploaded successfully.'],
+        7 => ['style' => 'danger', 'text' => 'Failed to upload comment'],
     ]
 ];
 

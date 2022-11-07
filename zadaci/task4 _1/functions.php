@@ -2,6 +2,7 @@
 $badWords = ['drop', 'delete', 'kill', 'destroy', 'fool'];
 require 'config.php';
 
+
 /**
  * Generates a dropdown menu based on the data inputted. If the user enters month as the name parameter, a select list with months will be generated,
  * if years is inputted as the name parameter a select list with years will be generated
@@ -52,7 +53,7 @@ function getDropdownMenu(string $label, int $start, int $end, string $name, stri
  * @param mysqli $connection
  * @return array
  */
-function getFilteredCommentData(string $comment, array $badWords, mysqli $connection,string $file_name,string $status): array
+function getFilteredCommentData(string $email, string $name, string $comment, array $badWords, mysqli $connection, string $file_name, string $status): array
 {
     $trimmed_comment = trim(strip_tags($comment));
     $exploded_comment_array = explode(" ", $trimmed_comment);
@@ -76,7 +77,8 @@ function getFilteredCommentData(string $comment, array $badWords, mysqli $connec
         'total_words' => count($exploded_comment_array),
         'suggested_bad_level' => getSuggestedBadLevel($total_word_count, $bad_word_count)
     ];
-    insertComment($data, $trimmed_comment, $connection,$file_name,$status);
+
+    insertComment($email, $name, $data, $trimmed_comment, $connection, $file_name, $status);
     return $data;
 }
 
@@ -85,10 +87,10 @@ function getFilteredCommentData(string $comment, array $badWords, mysqli $connec
  * @param array $comment_data
  * @param string $dirty_comment
  * @param mysqli $connection
- * @return bool
  */
-function insertComment(array $comment_data, string $dirty_comment, mysqli $connection, string $file_name, string $status): bool
+function insertComment(string $email, string $name, array $comment_data, string $dirty_comment, mysqli $connection, string $file_name, string $status): void
 {
+    $error_string = './index.php?';
     $word = 0;
     $filtered_comment = $comment_data['filtered_comment'];
     foreach ($comment_data['words'] as $item) {
@@ -99,28 +101,24 @@ function insertComment(array $comment_data, string $dirty_comment, mysqli $conne
     $suggested_bad_level = $comment_data['suggested_bad_level'];
 
     if (!empty($file_name)) {
-        $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,name,status)
-                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),$file_name,$status)";
+        $sql = "INSERT INTO comment(name, email, comment, filtered_comment, total_bad_words, total_words, bad_level, date_time, image, status) 
+                VALUES('$name','$email','$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),'$file_name','$status') ";
     } else {
-        $sql = "INSERT INTO comment(comment,filtered_comment,total_bad_words,total_words,bad_level,date_time,status)
-                VALUES('$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),$status)";
+        $sql = "INSERT INTO comment(name, email, comment, filtered_comment, total_bad_words, total_words, bad_level, date_time,status) 
+                VALUES('$name','$email','$dirty_comment','$filtered_comment',$total_bad_words,$total_words,$suggested_bad_level,NOW(),'$status') ";
     }
+    mysqli_query($connection, $sql);
 
     if ($total_bad_words != 0) {
         $bad_words_sql = "INSERT INTO bad_word(id_comment, word, number)
                 VALUES(LAST_INSERT_ID(),$word,$total_bad_words)";
 
         if (mysqli_query($connection, $bad_words_sql)) {
-            echo 'bad words inserted';
+            header("Location:" . $error_string . 'm=6');
         } else {
-            echo 'error bad words';
+            header("Location:" . $error_string . 'm=7');
         }
-    }
-
-    if (mysqli_query($connection, $sql)) {
-        return true;
-    } else {
-        return false;
+        die();
     }
 }
 
@@ -137,15 +135,20 @@ function getSuggestedBadLevel($total_words, $total_bad_words): int|null
     } else {
         $result = $total_bad_words / $total_words;
         $percent = round((float)$result * 100) . '%';
-        var_dump($percent);
-        return match ($percent) {
-            $percent > 2 && $percent < 19 => 2,
-            $percent > 20 && $percent < 39 => 3,
-            $percent > 40 && $percent < 59 => 4,
-            $percent > 60 && $percent < 79 => 5,
-            $percent > 80 && $percent < 99 => 6,
-            default => null,
-        };
+        switch ($percent) {
+            case $percent > 2 && $percent < 19:
+                return 2;
+            case $percent > 20 && $percent < 39:
+                return 3;
+            case $percent > 40 && $percent < 59:
+                return 4;
+            case $percent > 60 && $percent < 79:
+                return 5;
+            case $percent > 80 && $percent < 99:
+                return 6;
+            default:
+                return null;
+        }
     }
 }
 
@@ -156,6 +159,45 @@ function getSuggestedBadLevel($total_words, $total_bad_words): int|null
 function getCurrentPage(): string
 {
     return substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1);
+}
+
+function selectData(mysqli $connection): array
+{
+    $data = [];
+    $sql = "SELECT * FROM comment INNER JOIN bad_word ON comment.id_comment = bad_word.id_comment";
+    $result = mysqli_query($connection, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data [] = $row;
+        }
+    }
+
+
+    return $data;
+}
+
+
+function get_bad_level($bad_level)
+{
+    switch ($bad_level) {
+        case $bad_level == null:
+            return "green";
+        case $bad_level == 1:
+            return "red";
+        case $bad_level == 2:
+            return "orange";
+        case $bad_level == 3:
+            return "yellow";
+        case $bad_level == 4:
+            return "blue";
+        case $bad_level == 5:
+            return "light_blue";
+        case $bad_level == 6:
+            return "pink";
+        default:
+            return null;
+    }
 }
 
 

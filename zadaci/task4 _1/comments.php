@@ -28,13 +28,14 @@ if (!empty($_FILES['image']['tmp_name'])) {
         header("Location:" . $error_string . 'm=3');
         die();
     }
-
-    if (getFilteredCommentData(comment: $comment, badWords: $badWords,connection: $connection,file_name: $newFileName,status: $status)) {
-        header("Location:" . $error_string . 'm=4');
-        die();
-    }
-
+    getFilteredCommentData(email: $email, name: $name, comment: $comment, badWords: $badWords, connection: $connection, file_name: $newFileName, status: $status);
+} else {
+    $newFileName = "no file";
+    getFilteredCommentData(email: $email, name: $name, comment: $comment, badWords: $badWords, connection: $connection, file_name: $newFileName, status: $status);
 }
+
+
+
 
 
 
