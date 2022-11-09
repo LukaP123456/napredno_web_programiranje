@@ -1,5 +1,4 @@
 <?php
-
 require "db_config.php";
 
 $connection = databaseConnect(DB_CONN);

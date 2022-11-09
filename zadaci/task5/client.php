@@ -10,4 +10,3 @@ $numbers = str_split($numbers_temp, 3);
 
 asort($cities);
 $citiesTemp = $cities;
-var_dump($citiesTemp);
