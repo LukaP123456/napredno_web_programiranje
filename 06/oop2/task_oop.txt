@@ -1,0 +1,79 @@
+﻿1. Create an interface with name Select. It has to contain two methods
+
+    public function render();
+
+    public function setDefaultValue($value);
+
+
+create a SelectArray class that implements the Select interface and has 
+the following properties:
+
+    protected $name;
+    protected $defaultValue = "";
+    protected $id;
+    protected $label;
+    protected $array;
+    protected $key;
+
+declare methods:
+
+__construct (receives all necessary parameters)
+render
+setDefaultValue($value)
+getDefaultValue
+
+
+Render method checks that value of key property is true, 
+if it is then it writes out the key and value from array for select list,
+
+While writting out, it checks the default value and adds the selected attribute to it
+
+After creating an object of class SelectArray run the setDefaultValue method 
+to set the default value
+
+config.php contains months array with values:
+
+$months = [
+    1 => 'January',
+    2 => 'February',
+    3 => 'March',
+    4 => 'April',
+    5 => 'May',
+    6 => 'June',
+    7 => 'July',
+    8 => 'August',
+    9 => 'September',
+    10 => 'October',
+    11 => 'November',
+    12 => 'December'];
+
+use this array for SelectArray class
+------------------------------------------------------------------------------------
+
+create a SelectNumber class that implements the Select interface and 
+have the following properties:
+
+
+    protected $name;
+    protected $defaultValue = 0;
+    protected $id;
+    protected $label;
+    protected $start;
+    protected $end;
+
+
+and methods:
+
+__construct (receives all necessary parameters)
+render
+setDefaultValue($value)
+
+
+The render method should print a select list using the for loop, taking the start and end values. Within this method, check if initial
+value is greater than the final and if it is, change their values
+
+While writting out, it checks the default value and adds the selected attribute to it
+
+After creating an object of class SelectNumber, run the setDefaultValue method to set the default value
+
+
