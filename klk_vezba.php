@@ -11,7 +11,7 @@
 //} else
 //    echo "NO problem!";
 //echo ($salary % 2 == 0) ? "Salary is even." : "Sorry, salary is odd.";
-
+//
 //$var = 12;
 //$result = $var <=> 13;
 //$chars = "0987654321";
@@ -55,6 +55,7 @@
 //$b = 0;
 //$c = 0;
 //$l = printf("#%3$02x%1$02x%2$02x", $a, $b, $c);
+////$l = printf("#%1$02b", $a);
 //do {
 //    if ($c % 3 === 0) {
 //        $e .= $c;
@@ -64,7 +65,7 @@
 //    $c++;
 //} while ($c <= $l);
 //echo "<p>$e $s</p>";
-
+//
 //$option = "upload";
 //$file_name = $_FILES['image']["name"];
 //$file_temp = $_FILES["image"]["tmp_name"];
@@ -79,7 +80,7 @@
 //function upload($file_temp)
 //{
 //    $new_name = "images/".time().mt_rand(1000,3500).".jpg";
-// return move_uploaded_file($file_temp=$new_name);
+// return move_uploaded_file($file_temp,$new_name);
 //};
 
 $word = "php it css 21 45";
@@ -94,7 +95,6 @@ function sortLastChars($word)
             $slovo = $item[strlen($item) - 1];
             $array[] = $slovo;
             sort($array);
-
         }
     }
     foreach ($array as $item) {
