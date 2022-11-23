@@ -1,0 +1,130 @@
+1. Define classes Header, Body, Navigation, Footer, Meta and Html. 
+Put their definitions in src folder and subfolder:
+
+src -> Web -> 
+		Body.php
+		Footer.php
+		Header.php
+		Html.php
+		Navigation.php
+
+src -> Meta -> 
+		Meta.php
+
+Defines two namespaces and use it in index.php file
+Create a web page with all of elements
+
+----------------------------------------------------------------------------
+Body class has following properties and methods:
+
+$class
+$id
+
+__construct ($class, $id="")
+
+renderStart - generates body opening tag with class and id if is set
+renderEnd - generated body closing tag
+
+----------------------------------------------------------------------------
+
+Footer class has following properties and methods:
+
+$text
+$year
+
+__construct($text, $year)
+renderStart - generates footer opening tag
+renderContent - generates content of footer tag with text and if is year TRUE
+ write the actual year after text
+renderEnd - generates footer closing tag
+
+--------------------------------------------------------------------------
+
+Header class has following properties and methods:
+
+$title
+
+__construct($title)
+renderStart - generates head opening tag
+renderTitle - generates title tag with $title
+renderEnd- generates head closing tag
+
+--------------------------------------------------------------------------
+
+Html class has following properties and methods:
+
+$lang
+__construct($lang)
+renderStart - generates doctype and html opening tag
+renderEnd - generates html closing tag
+
+<!DOCTYPE html>
+<html lang="en">
+
+--------------------------------------------------------------------------
+
+Navigation class has following properties and methods:
+
+$links (array)
+
+__construct($links)
+renderNavigation - generates navigation list with links based on values from array
+
+For example:
+
+<nav> 
+<a href="1.html">Home</a>
+<a href="2.html">Contact</a>
+<a href="3.html">Download</a>
+</nav>
+
+
+Example for $links array:
+$links = ["1.html"=>"Home","2.html"=>"Contact"];
+
+$links = [
+	"Home" => ['active','1.html','title text'],
+	"Contact" => ['','2.html','contact text']
+];
+
+
+$links = [
+	"Home" => ['class'=>'active','url'=>'1.html','title'=>'title text'],
+	"Contact" => ['class'=>'','url'=>'2.html','title'=>'title text'],
+];
+
+
+
+$links = [
+	['Home','active','1.html','title text'],
+	['Contact','','2.html','contact text']
+];
+
+--------------------------------------------------------------------------
+
+Meta class has following properties and methods:
+$metas (array)
+
+__construct($metas)
+renderMetaTags - generates meta tags with values based on values from array
+
+For example:
+  <meta charset="UTF-8">
+  <meta name="description" content="Web tutorials">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <meta name="author" content="Mark M">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+$metas = [
+"description"=>"Web tutorials",
+"keywords"=> "HTML, CSS, JavaScript"
+];
+
+
+$metas = [
+	['name'=>'description','content=>'Web Tutorials'],
+	['name'=>'keywords','content=>'HTML, CSS, JavaScript'],
+	['name'=>'author','content=>'Mark M'],
+	['charset'=>'UTF-8'],
+    ['http-equiv'=>'X-UA-Compatible', 'content'=>'IE=edge'>
+];		

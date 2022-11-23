@@ -10,9 +10,10 @@ use Test\User\User as User;
 
 use Test\{
     Car\CarIntro as Intro,
-    Car\CarPrice as Price,
-    User\User as User
+    Car\CarPrice as Price
 };
+
+use User\User as User;
 
 $car1 = new Intro();
 echo $car1->sayHello()."<br>";
