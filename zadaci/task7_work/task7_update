@@ -1,0 +1,19 @@
+Change logic to use autoloader. Autoloader put in assets folder.
+
+Create pages folder which will contain content for pages (for examples index_content.php)
+
+Meta class put in Web folder and Web namespace
+
+In class Header create method renderHeader which will generate header with title, links and meta tags. Leave constructor and renderHeader methods, delete other methods in Header class.
+
+In class Body create method getContent which will require content page for page (for example index_content.php for index.php page)
+
+In class Footer create renderFooter which will render footer. Delete other methods except constructor and renderFooter.
+
+Create pages aboutus.php and contact.php.
+
+In config.php file add values for these pages where is it necessary.
+
+
+
+
