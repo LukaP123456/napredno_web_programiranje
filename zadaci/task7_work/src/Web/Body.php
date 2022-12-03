@@ -13,6 +13,11 @@ class Body
         $this->id = $id;
     }
 
+    public function getContent()
+    {
+        require "../pages/index_content.php";
+    }
+
     public function renderStart(): void
     {
         echo '<body class="' . $this->class . '"';

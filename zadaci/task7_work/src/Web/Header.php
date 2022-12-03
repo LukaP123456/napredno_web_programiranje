@@ -1,6 +1,9 @@
 <?php
 
 namespace Web;
+require "Meta.php";
+require_once '../assets/config.php';
+require_once '../assets/functions.php';
 
 class Header
 {
@@ -13,13 +16,12 @@ class Header
         $this->linksHeader = $linksHeader;
     }
 
-    public function renderStart()
+    public function renderHeader($metas)
     {
-        echo '<head>' . PHP_EOL;
-    }
+        $currentPage = getCurrentPage();
+        $meta = new Meta($metas[$currentPage]);
 
-    public function renderLinks(): void
-    {
+        echo '<head>' . PHP_EOL;
         if (!empty($this->linksHeader)) {
             foreach ($this->linksHeader as $linkData) {
                 $output = '<link ';
@@ -32,15 +34,8 @@ class Header
                 echo $output;
             }
         }
-    }
-
-    public function renderTitle()
-    {
+        $meta->renderMetaTags();
         echo '<title>' . $this->title . '</title>' . PHP_EOL;
-    }
-
-    public function renderEnd()
-    {
         echo '</head>' . PHP_EOL;
     }
 }
