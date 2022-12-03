@@ -15,7 +15,7 @@ class Body
 
     public function getContent()
     {
-        require "../pages/index_content.php";
+        require "./pages/index_content.php";
     }
 
     public function renderStart(): void

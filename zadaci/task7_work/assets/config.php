@@ -1,6 +1,6 @@
 <?php
 $metas = [
-    'index_content.php' => [
+    'index.php' => [
         ['name' => 'description', 'content' => 'Web Tutorials'],
         ['name' => "keywords", 'content' => 'HTML, CSS, JavaScript'],
         ['name' => 'author', 'content' => 'Mark M'],
