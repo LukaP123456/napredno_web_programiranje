@@ -13,22 +13,14 @@ class Footer
         $this->year = $year;
     }
 
-    public function renderStart(): void
+    public function renderFooter()
     {
         echo '<footer>';
-    }
-
-    public function renderContent(): void
-    {
         echo $this->text;
 
         if ($this->year)
             echo " " . date("Y");
-    }
-
-    public function renderEnd(): void
-    {
         echo '</footer>' . PHP_EOL;
-    }
 
+    }
 }
