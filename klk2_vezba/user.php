@@ -14,7 +14,7 @@ require 'vendor/autoload.php';
 
 function checkUser($username, $password, $connection)
 {
-    $sql = "SELECT * FROM user WHERE username = '$username' AND password = '$password' ";
+    $sql = "SELECT * FROM user WHERE username = '$username'";
     $result = mysqli_query($connection, $sql) or die(mysqli_error($connection));
 
     if (mysqli_num_rows($result) > 0) {
@@ -31,8 +31,8 @@ function checkUser($username, $password, $connection)
 
 if (isset($_POST['submit']) and isset($_POST['ime'])) {
 
-    $username = $_POST = ['ime'];
-    $password = $_POST = ['password'];
+    $username = $_POST['ime'];
+    $password = $_POST['lozinka'];
     $connection = databaseConnect();
 
     if (!checkUser($username, $password, $connection)) {
@@ -42,7 +42,6 @@ if (isset($_POST['submit']) and isset($_POST['ime'])) {
 
     $_SESSION['id_user'] = checkUser($username, $password, $connection);
     $id_user = $_SESSION['id_user'];
-    echo $_SESSION['id_user'];
     setcookie('success', md5(time()+strtotime("3 days")), strtotime("5 minutes"), "/","",true,true);
 
     $sql = "INSERT INTO log(id_user, date_time)

@@ -23,13 +23,13 @@ $users = [
     ],
     1 => [
         'username' => 'Marko',
-        'password' => 'sifra12345',
+        'password' => 'lozinka12345',
         'email' => 'marko@gmail.com',
         'status' => 'novice'
     ],
     2 => [
         'username' => 'Ivan',
-        'password' => 'sifra12345',
+        'password' => 'password12345',
         'email' => 'ivan@gmail.com',
         'status' => 'novice'
     ],

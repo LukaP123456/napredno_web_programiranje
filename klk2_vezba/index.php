@@ -19,7 +19,7 @@ if (isset($_GET['e'])){
 
 <form action="user.php" method="post">
 
-    <input type="text" name="ime" placeholder="ime">
+    <input type="text" name="ime" id="ime" placeholder="ime">
     <input type="password" name="lozinka" placeholder="lozinka">
     <input type="submit" name="submit">
 

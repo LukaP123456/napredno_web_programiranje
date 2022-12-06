@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['id_user'])){
+if (isset($_SESSION['id_user'])) {
     echo "Korisnik je prijavljen";
 }
 
@@ -10,16 +10,24 @@ if (!isset($_POST['submit']) and !isset($_POST['ime'])) {
     die();
 }
 
-$allowedTypes = array(IMAGETYPE_PNG);
-$detectedType = exif_imagetype($_FILES['fajl']['tmp_name']);
-$error = !in_array($detectedType, $allowedTypes);
+if (empty($_FILES['fajl']['tmp_name'])){
+    header("Location:newImage.php?e=2");
+    die();
+}
 
-if (!empty($error)){
+$allowedTypes = IMAGETYPE_PNG;
+$detectedType = exif_imagetype($_FILES['fajl']['tmp_name']);
+
+if ($detectedType != $allowedTypes) {
     header("Location:newImage.php?e=1");
     die();
 }
 
-$opis = strip_tags( $_POST['opis'],['<b>','<i>','<u>']);
+$opis = strip_tags($_POST['opis'], ['<b>', '<i>', '<u>']);
+
+$target_dir = "gallery/";
+//$target_file = $target_dir.
+
 
 
 //03/73.php
