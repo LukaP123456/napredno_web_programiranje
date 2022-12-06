@@ -22,10 +22,10 @@ foreach ($values_array as $item) {
 }
 
 
-function UserExists(string $name,mysqli $connection){
-
-    $sql = "SELECT * FROM users WHERE username = '$name'";
-
-    if ()
-
-}
+//function UserExists(string $name,mysqli $connection){
+//
+//    $sql = "SELECT * FROM users WHERE username = '$name'";
+//
+//    if ()
+//
+//}

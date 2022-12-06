@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['id_user'])){
+if (isset($_SESSION['id_user'])) {
     echo "Korisnik je prijavljen";
 }
 
@@ -38,17 +38,18 @@ function getCategory($connection)
 
 }
 
-getCategory($connection);
-
-
-if (isset($_GET['e'])){
+if (isset($_GET['e']) AND $_GET['e']==1) {
     echo "Wrong file type";
 }
 
+if (isset($_GET['e']) AND $_GET['e']==2) {
+    echo "Please uplaod a png file";
+}
 ?>
-<form action="addImage.php" method="post"  enctype="multipart/form-data">
+<form action="addImage.php" method="post" enctype="multipart/form-data">
+    <?php getCategory($connection); ?>
     <input type="text" name="opis" id="opis" placeholder="opis fajla">
-    <input type="file" name="fajl" id="fajl" accept="image/png" >
+    <input type="file" name="fajl" id="fajl" accept="image/png">
     <input type="submit" name="submit">
 </form>
 
