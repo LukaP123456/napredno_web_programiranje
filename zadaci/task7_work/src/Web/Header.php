@@ -2,8 +2,8 @@
 
 namespace Web;
 require "Meta.php";
-require_once '../assets/config.php';
-require_once '../assets/functions.php';
+require_once './assets/config.php';
+require_once './assets/functions.php';
 
 class Header
 {
