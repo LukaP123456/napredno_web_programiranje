@@ -11,27 +11,15 @@
 
 <form action="check.php" method="post">
     <input type="text" name="word">
-    <input type="button" value="submit">
+    <input type="submit" value="submit">
 </form>
 
-
+<p>These are your words:</p>
 <?php
-
-// This function grabs the definition of a word in JSON format.
-function grab_json_definition($word, $ref, $key): false|string
-{
-    $uri = "https://dictionaryapi.com/api/v3/references/" . urlencode($ref) . "/json/" . urlencode($word) . "?key=" . urlencode($key);
-
-    return file_get_contents($uri);
+$words= json_decode(file_get_contents('https://api.datamuse.com/words?ml=ringing+in+the+ears'));
+for ($i = 0; $i <= count($words) - 1; $i++){
+    echo $words[$i]->word."<br>";
 }
-
-
-$jdef = grab_json_definition("apple", "sd2", "66eb45b6-7305-4d31-aeae-09ea236d9c69");
-
-
-var_dump(json_decode($jdef));
-//var_dump($jdef[0])
-
 ?>
 
 </body>
