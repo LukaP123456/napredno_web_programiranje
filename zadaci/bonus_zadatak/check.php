@@ -24,6 +24,13 @@ $shortest = -1;
 foreach ($word_array as $word) {
     // calculate the distance between the input word,
     // and the current word
+    if ($input == $word){
+        echo "Input word: $input\n";
+        echo "Exact match found: $closest<br>";
+        echo "Distance: 0<br>";
+        die();
+    }
+
     $lev = levenshtein($input, $word);
     // check for an exact match
     if ($lev == 0) {
