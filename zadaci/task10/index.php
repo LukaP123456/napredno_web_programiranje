@@ -68,6 +68,25 @@
 <body>
 
 <form action="send.php" method="post" enctype="multipart/form-data">
+    <?php
+
+    // Define an array of error messages
+    $error_messages = array(
+        'empty' => 'Error: All fields are required',
+        'invalid-to' => 'Error: Invalid email address',
+        'failed-to-move' => 'Error: Failed to move file',
+    );
+
+    // Check for the "error" parameter in the URL
+    if (isset($_GET['error']) && isset($error_messages[$_GET['error']])) {
+        // If the error is known, display the corresponding error message
+        echo '<p style="color: white;">' . $error_messages[$_GET['error']] . '</p>';
+    } else {
+        // If the error is unknown, display a default error message
+        echo '<p style="color: white;">Error: Unknown error</p>';
+    }
+
+    ?>
     <label for="subject">Subject:</label><br>
     <input type="text" id="subject" name="subject"><br>
     <br>
