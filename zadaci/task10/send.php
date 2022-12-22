@@ -1,4 +1,5 @@
 <?php
+require "InsertMailsClass.php";
 require "functions.php";
 require "Mail.php";
 
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cc = $_POST['cc'];
     $bcc = $_POST['bcc'];
     $text = $_POST['text'];
-    $is_html = isset($_POST['is_html']) ? $text : strip_tags($text);
+    $is_html = isset($_POST['is_html']) ? strip_tags($text) : $text;
     $file = $_FILES['file'] ?? "No file";
     // Validate the form data
     if (empty($subject) || empty($to) || empty($text)) {
@@ -23,8 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    Mail::sendMail('Hello',$to);
-    getCountryCode();
+    $country_code = getCountryCode();
+    $ip_address = getIpAddress();
+    $pdo = connectDatabase($dsn, $pdoOptions);
+    $file_path = ($file['tmp_name']);
+    $error = Mail::sendMail($subject, $to, $text, $file_path,$cc,$bcc);
+
+    if (empty($error)) {
+        InsertMailsClass::insertMails($pdo, $ip_address, $country_code['country'], $subject, $to, $cc, $bcc, $is_html, $text, $file['tmp_name'], "sent");
+    }
+        InsertMailsClass::insertMails($pdo, $ip_address, $country_code['country'], $subject, $to, $cc, $bcc, $is_html, $text, $file['tmp_name'], "error");
+        InsertMailsClass::insertErrors($pdo,$error);
+
 
     if (!empty($_FILES['file']['tmp_name'])) {
         $directory = "files/";
@@ -35,10 +46,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location:index.php?error=failed-to-move');
             die();
         }
-
-
-    } else {
-        // Form has not been submitted
-        echo 0;
     }
 }

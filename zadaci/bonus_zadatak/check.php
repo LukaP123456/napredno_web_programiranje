@@ -14,8 +14,8 @@ $input = $_POST['word'];
 $words = json_decode(file_get_contents('https://api.datamuse.com/words?ml=ringing+in+the+ears'));
 foreach ($words as $value) {
     $word_array[] = $value->word;
-    if (InsertWordsClass::select($pdo)) {
-        InsertWordsClass::insert($value->word, $pdo);
+    if (InsertMailsClass::select($pdo)) {
+        InsertMailsClass::insert($value->word, $pdo);
     }
 }
 // no shortest distance found, yet
@@ -49,8 +49,8 @@ foreach ($word_array as $word) {
     }
 }
 //Insert into results
-$id = InsertWordsClass::findWordId($pdo,$closest);
-InsertWordsClass::result($pdo,$input,$lev,$id);
+$id = InsertMailsClass::findWordId($pdo,$closest);
+InsertMailsClass::result($pdo,$input,$lev,$id);
 
 echo "Input word: $input\n";
 if ($shortest == 0) {
