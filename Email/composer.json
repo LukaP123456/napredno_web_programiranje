@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.7",
+        "mobiledetect/mobiledetectlib": "^3.74"
+    }
+}

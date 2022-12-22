@@ -1,0 +1,79 @@
+https://getcomposer.org/
+https://github.com/PHPMailer/PHPMailer
+https://packagist.org/
+
+1. Create database emails with following tables:
+
+mails: id_mail, ip_address, country_code, subject, to, cc, bcc, is_html, text, file, status (sent, error), date_time
+errors: id_error, id_mail, message, date_time
+
+2. Install composer. Add PHPMailer to your project with composer (vendor).
+
+3. Create test.php file to send test mail with your credentials. Add task4.pdf attachment to the mail.
+
+4. Create mail.php that has form to send emails. Form has fields:
+
+subject: required
+to: required
+cc: ( use <input type="email" id="emails" name="emails" multiple>. Separate each email address with a comma. )
+bcc: ( use <input type="email" id="emails" name="emails" multiple>. Separate each email address with a comma. )
+is html (checkbox)
+text: (textarea) required
+file: for sending file to the directory files
+send button
+cancel button
+
+Sent data with POST method to send.php file. Send.php checks if required data is entered and if something is wrong redirect user to the mail.php and write proper message.
+
+File send.php detects IP address and use https://api.country.is/185.90.134.203 API for getting country code. Use CURL for getting data.
+
+// https://www.php.net/manual/en/intro.curl.php
+
+$url = "https://api.country.is/185.90.134.203";
+$client = curl_init($url);
+curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($client);
+$result = json_decode($response, true);
+
+var_dump($result);
+
+For getting country code create function getCountryCode(string $ipAddress):array
+
+
+For getting IP Address use
+
+function getIpAddress(): string
+{
+
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+        $ip = "unknown";
+    }
+
+    return $ip;
+}
+
+
+
+
+If is html is not checked strip tags from text. Upload files in files directory. Change name of file with following pattern: timestamp-mt_rand(1000,100000).extension
+
+Insert all data in table mails. If file is uploaded add it to the mail as attachment.
+
+If something went wrong with email sending, insert data in table errors (also Exception message). If email is sent correctly update status in table mails to sent.
+
+Put MySQL database and files on your web server.
+
+Test script with several version of mails, using cc, bcc, files, html version and not html version.
+
+
+
+
+
