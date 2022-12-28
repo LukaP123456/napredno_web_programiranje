@@ -18,7 +18,7 @@ var_dump($letter);
 $users = getUsers($pdo,$letter);
 foreach ($users as $user) {
     echo $user['name'] . ' ' . $user['email'] . '<br>';
-    echo '<img src="'.$user['image'].'"><br>';
+    echo '<img width="100" src="'.$user['image'].'"><br>';
 }
 function getUsers( $pdo,string $letter): array
 {
