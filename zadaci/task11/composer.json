@@ -1,0 +1,11 @@
+{
+    "require": {
+        "fakerphp/faker": "^1.21",
+        "bluemmb/faker-picsum-photos-provider": "2.0"
+    },
+    "config": {
+
+        "platform-check": false
+
+    }
+}
